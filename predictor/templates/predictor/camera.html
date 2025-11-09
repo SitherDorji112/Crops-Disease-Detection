@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camera Prediction</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: url("{% static 'predictor/images/bg.jpg' %}") no-repeat center center/cover;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #28a745;
+      color: white;
+      padding: 15px 25px;
+      border: none;
+      font-size: 23px;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .back-btn:hover {
+      background-color: #5ae000;
+      transform: scale(1.05);
+    }
+    video {
+      width: 900px;
+      height: 600px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      border: 3px solid #fff;
+      object-fit: cover;
+    }
+    button {
+      background-color: #007bff;
+      border: none;
+      padding: 15px 24px;
+      margin: 5px;
+      font-size: 20px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+    .result {
+      color: white;
+      margin-top: 20px;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <a href="{% url 'predictor:index' %}"><button class="back-btn">Home</button></a>
+
+    <video id="camera" autoplay></video>
+    <form id="cameraForm" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="camera_image" id="camera_image">
+      <button type="button" onclick="capture()">📸 Capture & Predict</button>
+    </form>
+
+    {% if prediction %}
+    <div class="result">
+        <p>Predicted Class: {{ prediction.class }}</p>
+        <p>Confidence: {{ prediction.confidence }}%</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    const video = document.getElementById('camera');
+    const cameraImage = document.getElementById('camera_image');
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { video.srcObject = stream; });
+
+    function capture() {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0);
+      cameraImage.value = canvas.toDataURL('image/jpeg');
+      document.getElementById('cameraForm').submit();
+    }
+  </script>
+</body>
+</html>

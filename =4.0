@@ -1,0 +1,10 @@
+Collecting Django
+  Downloading django-5.2.7-py3-none-any.whl (8.3 MB)
+Collecting sqlparse>=0.3.1
+  Using cached sqlparse-0.5.3-py3-none-any.whl (44 kB)
+Requirement already satisfied: tzdata in e:\year 4, sem 1\apc419_computer vision\project\croproject\cvenv\lib\site-packages (from Django) (2025.2)
+Collecting asgiref>=3.8.1
+  Downloading asgiref-3.10.0-py3-none-any.whl (24 kB)
+Requirement already satisfied: typing_extensions>=4 in e:\year 4, sem 1\apc419_computer vision\project\croproject\cvenv\lib\site-packages (from asgiref>=3.8.1->Django) (4.15.0)
+Installing collected packages: sqlparse, asgiref, Django
+Successfully installed Django-5.2.7 asgiref-3.10.0 sqlparse-0.5.3

@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Crop Image</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: url("{% static 'predictor/images/bg.jpg' %}") no-repeat center center/cover;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #28a745;
+      color: white;
+      padding: 15px 25px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 23px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .back-btn:hover {
+      background-color: #5ae000;
+      transform: scale(1.05);
+    }
+    /* === Gray container === */
+    .upload-container {
+      background-color: rgba(200, 200, 200, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 60px 100px;
+      text-align: center;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    h2 {
+      color: white;
+      font-size: 33px;
+      margin-bottom: 20px;
+    }
+    input[type="file"] {
+      color: white;
+      background-color: #28a745;
+      border: none;
+      font-size: 20px;
+      border-radius: 5px;
+      padding: 15px;
+      margin-top: 9px;
+    }
+    button {
+      background-color: #007bff;
+      border: none;
+      font-size: 20px;
+      padding: 15px 24px;
+      margin-top: 20px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+    .result {
+      color: white;
+      margin-top: 20px;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <a href="{% url 'predictor:index' %}"><button class="back-btn">Home</button></a>
+
+    <div class="upload-container">
+      <h2> Upload Crop Image for Disease Detection </h2>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="leaf_image" accept="image/*" required>
+        <br>
+        <button type="submit">Predict</button>
+      </form>
+    </div>
+
+    {% if prediction %}
+    <div class="result">
+        <p>Predicted Class: {{ prediction.class }}</p>
+        <p>Confidence: {{ prediction.confidence }}%</p>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>

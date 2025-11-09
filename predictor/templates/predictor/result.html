@@ -1,0 +1,22 @@
+predictor/templates/predictor/result.html
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Result</title>
+</head>
+<body>
+  <h1>Prediction Result</h1>
+  <p><strong>Predicted class:</strong> {{ result.pred_class }}</p>
+  <p><strong>Probability:</strong> {{ result.pred_prob|floatformat:4 }}</p>
+
+  <h3>Top classes</h3>
+  <ul>
+  {% for c,p in result.all %}
+    <li>{{ c }} — {{ p|floatformat:4 }}</li>
+  {% endfor %}
+  </ul>
+
+  <a href="{% url 'predictor:index' %}">Back</a>
+</body>
+</html>
